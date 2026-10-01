@@ -132,7 +132,7 @@ Every user UI string follows these binding rules:
   8. Never use em-dashes in help content.
 
 ## 10. Sub-Agents
-Create the following agent definition files, each configured with the selected model for its role:
+Create the following agent definition files in `.github/agents/`, each configured with the selected model for its role:
 
 - `architect.agent.md`
 - `backend.agent.md`
