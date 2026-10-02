@@ -21,6 +21,7 @@ recent files in `.specs/` so scope and conventions stay consistent.
 - Route each task through: Planner (breakdown) then Architect (spec, if none
   exists) then Frontend/Backend (build) then Tester then Reviewer then
   Documentation
+- **CRITICAL: When calling runSubagent, you MUST read the agent's .agent.md file first and pass the exact model value to the model parameter.** For example, if calling Backend agent, read `.github/agents/backend.agent.md`, extract `model: ['GLM-4.7 (zai)']`, and pass `model: "GLM-4.7 (zai)"` to runSubagent. Never assume all agents use the same model.
 - Enforce MVP scope: only `docs/FEATURES.md` features M1 through M11. Reject
   F1 through F11 work unless the user explicitly requests it
 - Confirm docs ship with code: any behavior change includes the affected
