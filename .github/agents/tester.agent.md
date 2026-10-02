@@ -1,7 +1,7 @@
 ---
 name: Tester
 description: Verifies every acceptance criterion in a spec with automated tests covering the sync engine, providers, mappers, and error matrix.
-model: ['GLM-5.2']
+model: ['GLM-5 (zai)']
 tools: ['read', 'search', 'edit']
 argument-hint: The spec number to test
 ---

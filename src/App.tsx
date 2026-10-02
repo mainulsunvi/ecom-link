@@ -1,54 +1,71 @@
-import { framer, CanvasNode, useIsAllowedTo } from "@framer/plugin"
-import { useState, useEffect } from "react"
+/**
+ * App: plugin shell. Owns which modal is open and refreshes the dashboard
+ * after saves (architecture: App owns modal router state; no routes in MVP).
+ */
+
+import { useState } from "react"
+import { framer } from "@framer/plugin"
 import "./App.css"
+import { Dashboard } from "./views/Dashboard"
+import { ConnectionModal } from "./views/ConnectionModal"
+import type { ConnectionRecord } from "./storage/connections"
 
 framer.showUI({
   position: "top right",
-  width: 240,
-  height: 95,
+  width: 340,
+  height: 540,
 })
 
-function useSelection() {
-  const [selection, setSelection] = useState<CanvasNode[]>([])
-
-  useEffect(() => {
-    return framer.subscribeToSelection(setSelection)
-  }, [])
-
-  return selection
-}
+/** Which modal is open, if any. Modals only; no routes in the MVP. */
+type ModalState =
+  | { mode: "add" }
+  | { mode: "edit"; connection: ConnectionRecord }
+  | null
 
 export function App() {
-  const selection = useSelection()
-  const isAllowed = useIsAllowedTo("addSVG")
-  const layer = selection.length === 1 ? "layer" : "layers"
+  const [modal, setModal] = useState<ModalState>(null)
+  const [dataVersion, setDataVersion] = useState(0)
 
-  const handleAddSvg = async () => {
-    await framer.addSVG({
-      svg: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="#999" d="M20 0v8h-8L4 0ZM4 8h8l8 8h-8v8l-8-8Z"/></svg>`,
-      name: "Logo.svg",
+  function handleOpenAdd() {
+    setModal({ mode: "add" })
+  }
+
+  function handleOpenEdit(connection: ConnectionRecord) {
+    setModal({ mode: "edit", connection })
+  }
+
+  function handleCloseModal() {
+    setModal(null)
+  }
+
+  function handleSaved() {
+    setDataVersion(function bump(version) {
+      return version + 1
     })
   }
 
   return (
-    <main>
-      <p>
-        Welcome! Check out the{" "}
-        <a
-          href="https://framer.com/developers/plugins/introduction"
-          target="_blank"
-        >
-          Docs
-        </a>{" "}
-        to start. You have {selection.length} {layer} selected.
-      </p>
-      <button
-        className="framer-button-primary"
-        onClick={handleAddSvg}
-        disabled={!isAllowed}
-      >
-        Insert Logo
-      </button>
-    </main>
+    <>
+      <Dashboard
+        dataVersion={dataVersion}
+        onConnect={handleOpenAdd}
+        onEdit={handleOpenEdit}
+      />
+      {modal ? (
+        modal.mode === "add" ? (
+          <ConnectionModal
+            connection={null}
+            onClose={handleCloseModal}
+            onSaved={handleSaved}
+          />
+        ) : (
+          <ConnectionModal
+            connection={modal.connection}
+            onClose={handleCloseModal}
+            onSaved={handleSaved}
+          />
+        )
+      ) : null}
+    </>
   )
 }

@@ -1,7 +1,7 @@
 ---
 name: Documentation
 description: Writes and maintains user-facing help in docs/help/ and the in-plugin Help Guide, following the eight binding doc rules.
-model: ['GLM-5.2']
+model: ['GLM-4.7 (zai)']
 tools: ['read', 'search', 'edit']
 argument-hint: The feature or page to document
 ---

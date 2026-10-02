@@ -1,7 +1,7 @@
 ---
 name: Planner
 description: Turns specs into an ordered, file-scoped task breakdown with dependencies and estimates. Does not write code or specs.
-model: ['GLM-5.2']
+model: ['GLM-5.2 (zai)']
 tools: ['read', 'search']
 argument-hint: The spec number to plan
 ---

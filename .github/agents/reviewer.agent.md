@@ -1,7 +1,7 @@
 ---
 name: Reviewer
 description: Reviews finished code against INSTRUCTION.md conventions: coding style, component reuse, Switch usage, UX writing rules, and docs shipping with code.
-model: ['GLM-5.2']
+model: ['GLM-5.2 (zai)']
 tools: ['read', 'search']
 argument-hint: The pull request, task, or files to review
 ---

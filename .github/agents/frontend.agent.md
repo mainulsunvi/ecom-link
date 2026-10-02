@@ -1,7 +1,7 @@
 ---
 name: Frontend
 description: Builds the plugin UI in React and TypeScript following Framer best practices, the project coding conventions, and the UX writing rules.
-model: ['GLM-5.2']
+model: ['GLM-5.1 (zai)']
 tools: ['read', 'search', 'edit']
 argument-hint: The UI task or component to build
 ---

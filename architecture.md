@@ -51,7 +51,8 @@ src/
     conflict.ts           # both-sides-changed detection + resolution results
     report.ts             # per-run report model, last N runs
   storage/
-    connections.ts        # credentials (masked on read), connection settings
+    connections.ts        # credentials in the internal CMS collection
+                          # (masked reads), connection settings
     snapshots.ts          # per-item two-way field snapshots
     history.ts            # sync run history
   ai/
@@ -75,7 +76,7 @@ src/
 | D2 | Identity = platform product id stored in a CMS field (`woo_id`). | Items update in place; canvas bindings never break. |
 | D3 | Two-way sync is field-scoped, opt-in per field, preview-before-write. | Safety rails from `docs/RESEARCH.md` 8.1. |
 | D4 | Change detection: Woo side = `date_modified` watermark; Framer side = value snapshots per two-way field. | Verified feasible in research section 8.1. |
-| D5 | Plugin data (connections, snapshots, history) is per-project, never leaves Framer. | Security; least privilege. |
+| D5 | Plugin-owned data (connections, snapshots, history) lives in a dedicated internal CMS collection ("Ecom-Link Internal") because `@framer/plugin` v4 has no plugin-scoped storage (verified 2026-10-03, `docs/API-NOTES.md`). Reads that reach views are masked; full secrets only ever travel to the store's own endpoint as Basic auth headers. Known MVP limitation: the collection is readable by project CMS users; accepted for the free MVP and flagged in the Security review. | Security and least privilege within the API surface Framer actually offers. |
 | D6 | Provider contract has capability flags (`supportsTwoWaySync`, writable fields list). | Shopify/Wix/Webflow slot in without engine changes. |
 | D7 | Images downloaded through the asset pipeline into Framer assets. | External URLs break on publish (research 10.2). |
 

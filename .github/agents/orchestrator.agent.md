@@ -1,7 +1,7 @@
 ---
 name: Orchestrator
 description: Coordinates all agents on a task, enforces INSTRUCTION.md conventions, and routes work through plan, build, test, review, and docs stages.
-model: ['GLM-5.2']
+model: ['GLM-5.2 (zai)']
 tools: ['read', 'search', 'edit']
 argument-hint: The task or feature request to coordinate
 ---

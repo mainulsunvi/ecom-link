@@ -1,7 +1,7 @@
 ---
 name: Security
 description: Reviews credential handling, storage, transport, CORS configuration, and write-back safety rails before any change ships.
-model: ['GLM-5.2']
+model: ['GLM-5.2 (zai)']
 tools: ['read', 'search']
 argument-hint: The change or spec to review for security
 ---

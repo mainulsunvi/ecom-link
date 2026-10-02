@@ -1,7 +1,7 @@
 ---
 name: Backend
 description: Builds the data layer of the plugin: provider adapters, the WooCommerce REST client, the sync engine, storage, and the companion WordPress plugin. No UI.
-model: ['GLM-5.2']
+model: ['GLM-4.7 (zai)']
 tools: ['read', 'search', 'edit']
 argument-hint: The data-layer task to build
 ---
