@@ -7,6 +7,7 @@
 
 import { useEffect } from "react"
 import type { ReactNode } from "react"
+import { X } from "lucide-react"
 
 interface ModalProps {
   /** Modal title in Title Case, e.g. "Connect Store". */
@@ -57,21 +58,7 @@ export function Modal({ title, onClose, children, footer }: ModalProps) {
             aria-label="Close"
             onClick={onClose}
           >
-            <svg
-              viewBox="0 0 16 16"
-              width="14"
-              height="14"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            <X size={14} aria-hidden="true" />
           </button>
         </header>
         <div className="modal-body">{children}</div>

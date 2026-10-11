@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react"
+import { RefreshCw, Globe, ShoppingBag, Store, Package, Book, MessageCircle, Lightbulb } from "lucide-react"
 
 import dashboardStyles from "../assets/styles/module/Dashboard.module.css"
 import { Modal } from "../components/ui/Modal"
@@ -72,78 +73,26 @@ function formatLastChecked(iso: string): string {
 
 /** Header brand mark: circling arrows for the sync motif. */
 function SyncMark() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M23 4v6h-6" />
-        <path d="M1 20v-6h6" />
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
-        <path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-      </g>
-    </svg>
-  )
+  return <RefreshCw size={16} aria-hidden="true" />
 }
 
 /** Row mark: a globe tinted by the connection state class around it. */
 function GlobeMark() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="9" />
-        <path d="M3 12h18" />
-        <path d="M12 3a13.5 13.5 0 0 1 3.6 9 13.5 13.5 0 0 1-3.6 9 13.5 13.5 0 0 1-3.6-9A13.5 13.5 0 0 1 12 3z" />
-      </g>
-    </svg>
-  )
+  return <Globe size={18} aria-hidden="true" />
 }
 
-/** Empty state mark: a shopping bag inviting the first connection. */
-function BagMark() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="24"
-      height="24"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-      </g>
-    </svg>
-  )
+/** Get the appropriate icon for each connection type. */
+function getConnectionTypeIcon(id: string, size: number = 24) {
+  switch (id) {
+    case "woocommerce":
+      return <ShoppingBag size={size} aria-hidden="true" />
+    case "shopify":
+      return <Store size={size} aria-hidden="true" />
+    case "bigcommerce":
+      return <Package size={size} aria-hidden="true" />
+    default:
+      return <Globe size={size} aria-hidden="true" />
+  }
 }
 
 /** Render the dashboard shell with the connection list. */
@@ -156,6 +105,34 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
   const [actionError, setActionError] = useState<string | null>(null)
   const [pendingDisconnect, setPendingDisconnect] =
     useState<ConnectionRecord | null>(null)
+
+  /** Available connection types with their status. */
+  const connectionTypes = [
+    {
+      id: "woocommerce",
+      name: "WooCommerce",
+      description: "",
+      available: true,
+    },
+    {
+      id: "shopify",
+      name: "Shopify",
+      description: "",
+      available: false,
+    },
+    {
+      id: "bigcommerce",
+      name: "BigCommerce",
+      description: "",
+      available: false,
+    },
+    {
+      id: "Wix-Commerce",
+      name: "Wix Commerce",
+      description: "",
+      available: false,
+    },
+  ]
 
   const load = useCallback(async function loadConnections() {
     setLoading(true)
@@ -354,6 +331,120 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
                   </div>
               ) : null}
 
+              {/* Section 1: Connection Types */}
+              <section className={dashboardStyles.section}>
+                  <h2 className={dashboardStyles.sectionTitle}>Connection Types</h2>
+                  <div className={dashboardStyles.connectionTypes}>
+                      {connectionTypes.map((type) => (
+                          <div
+                              key={type.id}
+                              className={`${dashboardStyles.connectionTypeCard} ${
+                                  !type.available ? dashboardStyles.connectionTypeDisabled : ""
+                              }`}
+                          >
+                              <span
+                                  className={dashboardStyles.connectionTypeIcon}
+                                  aria-hidden='true'
+                              >
+                                  {getConnectionTypeIcon(type.id)}
+                              </span>
+                              <div className={dashboardStyles.connectionTypeInfo}>
+                                  <div className={dashboardStyles.connectionTypeHeader}>
+                                      <h3 className={dashboardStyles.connectionTypeName}>
+                                          {type.name}
+                                      </h3>
+                                      {!type.available && (
+                                          <span className={dashboardStyles.badge}>Coming Soon</span>
+                                      )}
+                                  </div>
+                                  <p className={dashboardStyles.connectionTypeDescription}>
+                                      {type.description}
+                                  </p>
+                              </div>
+                              {type.available && (
+                                  <button
+                                      type='button'
+                                      className='btn btn-primary btn-small'
+                                      onClick={onConnect}
+                                  >
+                                      Connect
+                                  </button>
+                              )}
+                          </div>
+                      ))}
+                  </div>
+              </section>
+
+              {/* Section 2: Support */}
+              <section className={dashboardStyles.section}>
+                  <h2 className={dashboardStyles.sectionTitle}>Support</h2>
+                  <div className={dashboardStyles.supportLinks}>
+                      <a
+                          href='https://docs.example.com'
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className={dashboardStyles.supportLink}
+                      >
+                          <span className={dashboardStyles.supportIcon}><Book size={18} /></span>
+                          <span>Documentation</span>
+                      </a>
+                      <a
+                          href='https://support.example.com'
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className={dashboardStyles.supportLink}
+                      >
+                          <span className={dashboardStyles.supportIcon}><MessageCircle size={18} /></span>
+                          <span>Get Help</span>
+                      </a>
+                      <a
+                          href='https://feedback.example.com'
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className={dashboardStyles.supportLink}
+                      >
+                          <span className={dashboardStyles.supportIcon}><Lightbulb size={18} /></span>
+                          <span>Send Feedback</span>
+                      </a>
+                  </div>
+              </section>
+
+              {/* Section 3: Other Apps */}
+              <section className={dashboardStyles.section}>
+                  <h2 className={dashboardStyles.sectionTitle}>Other Apps</h2>
+                  <div className={dashboardStyles.otherApps}>
+                      <div className={dashboardStyles.appCard}>
+                          <h3 className={dashboardStyles.appName}>App One</h3>
+                          <p className={dashboardStyles.appDescription}>
+                              Description of the first app.
+                          </p>
+                          <a
+                              href='https://app1.example.com'
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              className='btn btn-secondary btn-small'
+                          >
+                              Learn More
+                          </a>
+                      </div>
+                      <div className={dashboardStyles.appCard}>
+                          <h3 className={dashboardStyles.appName}>App Two</h3>
+                          <p className={dashboardStyles.appDescription}>
+                              Description of the second app.
+                          </p>
+                          <a
+                              href='https://app2.example.com'
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              className='btn btn-secondary btn-small'
+                          >
+                              Learn More
+                          </a>
+                      </div>
+                  </div>
+              </section>
+
+              {/* Existing connections list (if any) */}
               {loading ? (
                   <div className={dashboardStyles.loadingRow}>
                       <span
@@ -362,33 +453,11 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
                       />
                       <span>Loading connections.</span>
                   </div>
-              ) : connections.length === 0 ? (
-                  <section
-                      className={`${dashboardStyles.card} ${dashboardStyles.emptyCard}`}>
-                      <span
-                          className={dashboardStyles.emptyIconWrap}
-                          aria-hidden='true'>
-                          <BagMark />
-                      </span>
-                      <h2 className={dashboardStyles.cardTitle}>
-                          No Store Connected Yet
-                      </h2>
-                      <p className='muted'>
-                          Connect your WooCommerce store to start syncing
-                          products.
-                      </p>
-                      <button
-                          type='button'
-                          className='btn btn-primary btn-lg btn-block'
-                          onClick={onConnect}>
-                          Connect store
-                      </button>
-                  </section>
-              ) : (
+              ) : connections.length > 0 ? (
                   <section className={dashboardStyles.card}>
                       <div className={dashboardStyles.cardHeadingRow}>
                           <h2 className={dashboardStyles.cardTitle}>
-                              Store Connections
+                              Your Connections
                           </h2>
                           <span className='muted small'>
                               {formatCount(connections.length, 'connection')}
@@ -397,14 +466,8 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
                       <ul className={dashboardStyles.connectionList}>
                           {connections.map(renderConnection)}
                       </ul>
-                      <button
-                          type='button'
-                          className='btn btn-secondary btn-block'
-                          onClick={onConnect}>
-                          Connect another store
-                      </button>
                   </section>
-              )}
+              ) : null}
 
               {pendingDisconnect ? (
                   <Modal

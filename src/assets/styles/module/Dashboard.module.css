@@ -85,6 +85,224 @@
 }
 
 /* ============================================================================
+   Section Layout
+   ============================================================================ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sectionTitle {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin: 0;
+  padding: 0 var(--space-xs);
+}
+
+/* ============================================================================
+   Connection Types
+   ============================================================================ */
+
+.connectionTypes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.connectionTypeCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.connectionTypeCard:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-glass);
+}
+
+.connectionTypeDisabled {
+  opacity: 0.6;
+}
+
+.connectionTypeDisabled:hover {
+  background: var(--bg-card);
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-sm);
+  cursor: not-allowed;
+}
+
+.connectionTypeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--radius-md);
+  color: var(--tint);
+  background: var(--tint-dimmed);
+  box-shadow: var(--tint-glow);
+}
+
+.connectionTypeIcon svg {
+  display: block;
+}
+
+.connectionTypeDisabled .connectionTypeIcon {
+  color: var(--text-muted);
+  background: var(--bg-surface-elevated);
+  box-shadow: none;
+}
+
+.connectionTypeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.connectionTypeHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  justify-content: space-between;
+}
+
+.connectionTypeName {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.connectionTypeDescription {
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+/* ============================================================================
+   Support Links
+   ============================================================================ */
+
+.supportLinks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.supportLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.supportLink:hover {
+  background: var(--bg-card);
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-sm);
+}
+
+.supportIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  font-size: 16px;
+}
+
+/* ============================================================================
+   Other Apps
+   ============================================================================ */
+
+.otherApps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.appCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.appCard:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-glass);
+}
+
+.appName {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.appDescription {
+  font-size: 12px;
+  line-height: 16px;
+  margin: 0;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+/* ============================================================================
    Cards - Liquid Glass Containers
    ============================================================================ */
 

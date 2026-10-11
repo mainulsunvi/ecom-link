@@ -3,6 +3,7 @@
  *
  * This replaces the modal-based flow with a dedicated page view, providing
  * more space and a better user experience in the small plugin window.
+ * <ArrowLeft />
  */
 
 import { useState } from "react"
@@ -10,6 +11,7 @@ import { Switch } from "../components/ui/Switch"
 import { HelpTooltip } from "../components/ui/HelpTooltip"
 import { Field } from "../components/ui/Field"
 import { Card } from "../components/ui/Card"
+import { ArrowLeft } from "lucide-react"
 import {
   CredentialFields,
   type CredentialErrors,
@@ -160,7 +162,7 @@ export function ConnectionPage({
                   className='btn btn-ghost-icon'
                   onClick={onBack}
                   disabled={submitting}>
-                  ←
+                  <ArrowLeft size={14} />
               </button>
               <h1 className={connectionPageStyles.pageTitle}>{pageTitle}</h1>
           </header>
@@ -168,12 +170,10 @@ export function ConnectionPage({
           <form
               className={connectionPageStyles.connectionPageForm}
               onSubmit={handleSubmit}>
-              <h2 className={connectionPageStyles.sectionTitle}>
-                  Store Details
-                  <HelpTooltip text='Where your WooCommerce store lives.' />
-              </h2>
               <Card>
-                  <Card.Section>
+                  <Card.Section
+                      title='Store Details'
+                      subheading='Where your WooCommerce store lives.'>
                       <Field
                           id='storeUrl'
                           label='Store URL'
