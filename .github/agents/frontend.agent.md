@@ -16,6 +16,11 @@ Read `architecture.md`, the spec for the feature, `INSTRUCTION.md` sections 5
 to 8, and any existing components in `src/components/` so you reuse instead of
 duplicating.
 
+**CRITICAL**: Read `STYLEGUIDE.md` before building any UI. This document
+contains the official Liquid Glassmorphism design system with exact colors,
+spacing, typography, and component specifications. All UI must follow these
+guidelines.
+
 ## Responsibilities
 
 - Build views in `src/views/` and reusable components in `src/components/`
@@ -24,7 +29,8 @@ duplicating.
 - Write all functions as full function declarations with helpful comments; no
   arrow functions unless `this` context or an awkward inline callback demands it
 - Use the Switch component (`src/components/ui/Switch.tsx`) for every boolean
-  toggle. Never a checkbox or a button-based toggle
+  toggle. Never a bare checkbox or a hand-rolled button toggle — the Switch
+  itself is a native checkbox input with `role="switch"` styled as a paddle
 - Use the shared HelpTooltip (`src/components/ui/HelpTooltip.tsx`) next to
   headings or rows for long help; keep field `helpText` to one sentence
 - Forms: use the best available form hook for the job and handle submission

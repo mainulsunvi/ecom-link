@@ -1,0 +1,156 @@
+/* ============================================================================
+   Design Tokens - Liquid Glassmorphism
+   ============================================================================ */
+
+:root,
+[data-theme="dark"],
+[data-framer-theme="dark"] {
+  /* Accent & Brand Palette */
+  --tint: #0099ff;
+  --tint-hover: #0088ee;
+  --tint-active: #0077dd;
+  --tint-dimmed: rgba(0, 153, 255, 0.14);
+  --tint-border: rgba(0, 153, 255, 0.38);
+  --tint-glow: 0 0 20px -3px rgba(0, 153, 255, 0.38);
+
+  /* Semantic Status Palette */
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --danger: #f43f5e;
+  --danger-bg: rgba(244, 63, 94, 0.12);
+
+  /* Surface & Glassmorphism Tokens */
+  --bg-app: #08090d;
+  --bg-surface: rgba(18, 22, 34, 0.68);
+  --bg-surface-elevated: rgba(26, 32, 48, 0.86);
+  --bg-card: rgba(20, 26, 40, 0.65);
+  --bg-card-hover: rgba(28, 36, 56, 0.78);
+  --bg-glass-base: rgba(14, 18, 28, 0.72);
+  --bg-glass-nav: rgba(12, 16, 26, 0.85);
+
+  /* Border Tokens */
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.28);
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #9aa2b1;
+  --text-tertiary: #717b91;
+  --text-muted: #646c7c;
+
+  /* Fluid Ambient Mesh Background */
+  --bg-mesh:
+    radial-gradient(ellipse 80% 50% at 20% -20%, rgba(0, 153, 255, 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(139, 92, 246, 0.11) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 110%, rgba(0, 212, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 90%, rgba(16, 185, 129, 0.06) 0%, transparent 55%);
+
+  /* Liquid Glass Effects */
+  --liquid-glass-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 60%, rgba(0, 153, 255, 0.04) 100%);
+  --shadow-liquid-glass:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 16px 0 rgba(255, 255, 255, 0.015),
+    0 8px 24px -4px rgba(0, 0, 0, 0.45);
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
+  --shadow-glass:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  --shadow-btn-primary:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    var(--tint-glow),
+    0 3px 10px rgba(0, 153, 255, 0.4);
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radii Scale */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  	/* Spacing */
+	--space-xxs: 2px;
+  	--space-xs: 4px;
+  	--space-sm: 8px;
+  	--space-md: 12px;
+  	--space-lg: 16px;
+  	--space-xl: 24px;
+ 	--space-xxl: 32px;
+}
+
+[data-theme="light"],
+[data-framer-theme="light"] {
+  /* Accent & Brand Palette */
+  --tint: #0099ff;
+  --tint-hover: #0088ee;
+  --tint-active: #0077dd;
+  --tint-dimmed: rgba(0, 153, 255, 0.10);
+  --tint-border: rgba(0, 153, 255, 0.30);
+  --tint-glow: 0 0 20px -3px rgba(0, 153, 255, 0.25);
+
+  /* Semantic Status Palette */
+  --success: #059669;
+  --success-bg: rgba(16, 185, 129, 0.10);
+  --warning: #d97706;
+  --warning-bg: rgba(245, 158, 11, 0.10);
+  --danger: #e11d48;
+  --danger-bg: rgba(244, 63, 94, 0.08);
+
+  /* Surface & Glassmorphism Tokens */
+  --bg-app: #f2f5fa;
+  --bg-surface: rgba(255, 255, 255, 0.82);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.96);
+  --bg-card: rgba(255, 255, 255, 0.78);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-glass-base: rgba(255, 255, 255, 0.82);
+  --bg-glass-nav: rgba(255, 255, 255, 0.88);
+
+  /* Border Tokens */
+  --border-default: rgba(0, 0, 0, 0.09);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-strong: rgba(0, 0, 0, 0.18);
+
+  /* Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
+
+  /* Liquid Glass Effects */
+  --liquid-glass-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.80) 100%);
+  --shadow-liquid-glass:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.06);
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.15);
+  --shadow-glass:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-btn-primary:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    var(--tint-glow),
+    0 3px 10px rgba(0, 153, 255, 0.3);
+
+	/* Spacing */
+	--space-xxs: 2px;
+  	--space-xs: 4px;
+  	--space-sm: 8px;
+  	--space-md: 12px;
+  	--space-lg: 16px;
+  	--space-xl: 24px;
+ 	--space-xxl: 32px;
+}

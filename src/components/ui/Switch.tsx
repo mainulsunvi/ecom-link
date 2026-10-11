@@ -1,12 +1,15 @@
 /**
  * Switch: the one and only boolean toggle (INSTRUCTION.md section 6).
  *
- * Every boolean setting in the plugin uses this component. Checkboxes,
- * SettingToggle-style widgets, and button-based toggles are banned by the
- * user directive from 2026-09-06.
+ * Every boolean setting in the plugin uses this component. Bare checkboxes,
+ * SettingToggle-style widgets, and hand-rolled button toggles are banned by
+ * the user directive from 2026-09-06. The Switch itself is a native
+ * checkbox input upgraded with switch semantics.
  */
 
 import type { ReactNode } from "react"
+
+import switchStyles from "../../assets/styles/module/Switch.module.css"
 
 interface SwitchProps {
   /** Current on/off state. */
@@ -21,8 +24,12 @@ interface SwitchProps {
 }
 
 /**
- * Render an accessible paddle switch. The native button element provides
- * keyboard support (Enter and Space) and focus behavior for free.
+ * Render an accessible paddle switch built on a native checkbox input.
+ * `role="switch"` upgrades the input to on/off semantics while keeping
+ * native keyboard support (Space), focus, checked, and disabled behavior
+ * for free. The track and thumb are decorative siblings of the visually
+ * hidden input, styled via `.switchInput:checked + .switchTrack` in
+ * Switch.module.css.
  */
 export function Switch({
   checked,
@@ -32,29 +39,30 @@ export function Switch({
   disabled = false,
 }: SwitchProps) {
   const control: ReactNode = (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label ?? ariaLabel}
-      className="switch"
-      disabled={disabled}
-      onClick={function handleClick() {
-        onChange(!checked)
-      }}
-    >
-      <span className="switch-track">
-        <span className="switch-thumb" />
+    <span className={switchStyles.switch}>
+      <input
+        type="checkbox"
+        role="switch"
+        className={switchStyles.switchInput}
+        checked={checked}
+        disabled={disabled}
+        aria-label={label ?? ariaLabel}
+        onChange={function handleChange(event) {
+          onChange(event.currentTarget.checked)
+        }}
+      />
+      <span className={switchStyles.switchTrack} aria-hidden="true">
+        <span className={switchStyles.switchThumb} />
       </span>
-    </button>
+    </span>
   )
   if (!label) {
     return control
   }
   return (
-    <span className="switch-row">
+    <label className={switchStyles.switchRow}>
       {control}
-      <span className="switch-label">{label}</span>
-    </span>
+      <span className={switchStyles.switchLabel}>{label}</span>
+    </label>
   )
 }

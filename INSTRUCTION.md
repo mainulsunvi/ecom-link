@@ -99,11 +99,39 @@ The architecture should still be designed with future platform integrations in m
 - **Avoid arrow functions** unless the situation specifically calls for one (e.g. preserving `this` context, inline callbacks where a declaration would be awkward).
 - Make the code as much readable as you can, also add helpful comment so that anybody can read the function and understand it properly.
 
-## 6. UI/UX (Polaris)
-- Use **Framer Best Pracitices** throughout the plugin.
-- Build reusable UI components inside `/components/` and reuse them wherever applicable instead of duplicating markup/logic.
-- Prefer **modals** over custom routes for UI/UX flows and forms — EXCEPT rules: rule create/edit live on dedicated routes.
-- **Boolean toggles always use the Switch component** (`plugin/components/ui/Switch.tsx`) — never Checkbox, Polaris SettingToggle, or button-based toggles (user directive 2026-09-06).
+## 6. Design System
+- **CRITICAL**: Read `STYLEGUIDE.md` before building any UI components or views.
+- The plugin uses the **Liquid Glassmorphism** design system with dark/light theme support.
+- All design tokens (colors, spacing, typography, shadows, radii) are defined in `src/assets/styles/variables.css`.
+- Use the CSS variables defined in the style guide (e.g., `--tint`, `--bg-surface`, `--text-primary`, `--radius-md`, etc.).
+- Never hardcode colors, spacing, or typography values. Always use the design tokens.
+- The design system includes:
+  - Dark/light theme support via `[data-theme]` and `[data-framer-theme]` selectors
+  - Liquid glass effects with backdrop-filter blur
+  - Electric blue accent color (#0099ff)
+  - Inter font family
+  - Fluid ambient mesh background
+  - Specific typography scale and radii
+
+## 6. UI/UX (Framer Plugin)
+
+### Plugin Window Dimensions (Hard Constraint)
+- **Width: 350px** (fixed). All layouts, components, and content MUST fit within this width. No horizontal overflow, no clipping, no elements wider than the viewport.
+- **Height: 600px** (minimum), **resizable vertically**. Design for 600px as the primary viewport height; content may scroll vertically but must never require horizontal scrolling.
+- These dimensions are set in `App.tsx` via `framer.showUI()` and are **not negotiable**. Every component must be designed and tested within this constraint.
+
+### UI/UX Quality Standards
+- **Compact but breathable.** Use consistent spacing (8px/12px/16px grid). Avoid cramped layouts and wasted space equally.
+- **Clear visual hierarchy.** Every view must have an obvious primary action, clear section separation, and readable typography at the constrained width.
+- **Polished interactions.** Buttons, inputs, and cards must have proper hover/active/focus states. Empty states must be informative, not blank.
+- **Consistent component usage.** Reuse components from `src/components/` for every repeated pattern. No ad-hoc inline styles for things a shared component already handles.
+- **Test at 350px width.** Before considering any UI work complete, verify that every element renders correctly at exactly 350px wide with no overflow or truncation issues.
+
+### General Rules
+- Use **Framer Best Practices** throughout the plugin.
+- Build reusable UI components inside `src/components/` and reuse them wherever applicable instead of duplicating markup/logic.
+- Prefer **modals** over custom routes for UI/UX flows and forms.
+- **Boolean toggles always use the Switch component** (`src/components/ui/Switch.tsx`) — never a bare checkbox, Framer's Checkbox, or a hand-rolled button toggle. The Switch is a native `<input type="checkbox" role="switch">` styled as a paddle; its checked state is styled via `.switchInput:checked + .switchTrack` in `src/assets/styles/module/Switch.module.css`.
 
 ## 7. UX Writing
 

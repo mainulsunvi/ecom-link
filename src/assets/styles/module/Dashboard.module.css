@@ -1,0 +1,326 @@
+/* Dashboard: shell, header, cards, connection list, and loading state.
+   Class names are camelCase so JSX can access them with dot notation. The
+   rise-in / pop-in / spin keyframes are local to this module. */
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  background: transparent;
+}
+
+/* Sticky header with liquid glass effect */
+.dashboardHeader {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  /* background: var(--bg-glass-nav); */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-default);
+  box-shadow: var(--shadow-liquid-glass);
+}
+
+.headerBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.headerLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--tint) 0%, var(--tint-active) 100%);
+  box-shadow: var(--shadow-btn-primary);
+}
+
+.headerLogo svg {
+  display: block;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dashboardTitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 650;
+  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.dashboardSubtitle {
+  margin: 0;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 450;
+  color: var(--text-tertiary);
+}
+
+/* Scrollable content area */
+.dashboardContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-md);
+  animation: rise-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ============================================================================
+   Cards - Liquid Glass Containers
+   ============================================================================ */
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-liquid-glass);
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-glass);
+}
+
+.emptyCard {
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
+  border-style: dashed;
+  border-color: var(--border-strong);
+}
+
+.emptyIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: var(--radius-full);
+  color: var(--tint);
+  background: var(--tint-dimmed);
+  box-shadow: var(--tint-glow);
+  animation: pop-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.emptyIconWrap svg {
+  display: block;
+}
+
+/* .muted is a shared global helper, so it needs :global() to be referenced
+   from inside a module. */
+.emptyCard :global(.muted) {
+  max-width: 240px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.cardHeadingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardTitle {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+/* ============================================================================
+   Connection List
+   ============================================================================ */
+
+.connectionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.connectionRow {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.connectionRow:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-glass);
+}
+
+.connectionRowActive {
+  border-color: var(--tint-border);
+  background: var(--tint-dimmed);
+  box-shadow:
+    inset 3px 0 0 var(--tint),
+    0 0 0 1px var(--tint-border),
+    var(--tint-glow);
+}
+
+/* Icon tile with status-based coloring */
+.connectionTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.connectionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.connectionIcon svg {
+  display: block;
+}
+
+.iconSuccess {
+  color: var(--success);
+  background: var(--success-bg);
+}
+
+.iconDanger {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.iconNeutral {
+  color: var(--text-muted);
+  background: var(--bg-surface-elevated);
+}
+
+.connectionMain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.connectionTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.connectionHost {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.connectionActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+/* ============================================================================
+   Loading State
+   ============================================================================ */
+
+.loadingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--tint);
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

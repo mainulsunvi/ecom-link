@@ -1,6 +1,6 @@
 # Ecom-Link Progress
 
-> Last updated: 2026-10-03
+> Last updated: 2026-10-04
 > Project: Framer plugin connecting Framer with eCommerce platforms (WooCommerce first)
 > Current phase: **Spec 001 and 002 implemented. Next: spec 003 (product import and sync).**
 
@@ -106,6 +106,26 @@ Verified `@framer/plugin` v4.1.0 API surface:
 - Security review passed with one standing warning: credentials live in a CMS collection that anyone with CMS access can read, and CMS collections can be queried on published sites if bound to pages. Documented on the Connections help page; revisit if Framer ships plugin-scoped storage.
 - The companion WordPress plugin (origin-locked CORS headers, OPTIONS preflight) is still to be scheduled as its own backend task.
 
+### 9. Design System Alignment Pass (2026-10-03)
+
+Restyled the spec 002 UI to match `docs/FRAME_DESIGN_SYSTEM.md`. No behavior changed, so spec 002 functionality and the help pages stay as they are.
+
+- `src/App.css`: spacing normalized to the 4px grid (connection rows, title and badge rows, switch rows, ghost buttons, notice steps), added the missing `.connection-main` stack rule, `.small` text moved to the 13px Small Text token, the active connection row now keeps its highlight on hover, and every button keeps a visible focus ring (inputs keep the border-plus-ring alternative).
+- `src/views/ConnectionModal.tsx`: notice title fixed to proper Title Case ("Connection Blocked by the Browser").
+- `.github/agents/frontend.agent.md`: design system path corrected to `docs/FRAME_DESIGN_SYSTEM.md`, the file the repo actually contains.
+- Help docs unchanged: no labels or flows changed, so `docs/help/Connections.md` remains accurate.
+
+### 10. Spec 001 Test Suite (2026-10-04)
+
+Automated tests for every spec 001 acceptance criterion. Created directly under the Tester contract because the subagent runner was unavailable in the session.
+
+- `src/providers/__tests__/providers.test.ts`: AC1 (registry lookup, typed `ProviderNotFoundError`, duplicate id rejection, `hasProvider`), AC2 (every section 9 field populated over a fixed Woo-shaped fixture, exact key set, platform type normalization, null handling for sale price and unmanaged stock), AC4 (exactly one provider after the barrel loads; a second provider and a read-only provider register with no engine change), plus the runtime halves of AC3 (capability flag guard, write path, resumable pagination).
+- `src/providers/__tests__/providers.test-d.ts`: AC3 type-level tests. `EcommerceProvider<false>` types `updateProductFields` as `never`, so an engine call fails compilation (self-verifying `@ts-expect-error` directive plus `expectTypeOf` assertions). The two-way, WooCommerce, and registry (`boolean`) variants stay callable.
+- `src/providers/__tests__/mockProvider.ts`: the mock provider fixtures (two-way in-memory provider factory, read-only provider, Woo-shaped raw products, section 9 field list).
+- `vitest.config.ts`: typecheck enabled, so `pnpm test` runs tsc over the `.test-d.ts` files in the same run. Compile-time criteria are therefore verified by the default test command.
+
+Note for the Architect: `EcommerceProvider<false>` declares `updateProductFields` as a required property of type `never`, so a read-only provider cannot be authored without a single type assertion (see `mockReadOnlyProvider`). A future amendment making the property optional (`updateProductFields?: never`) would remove that assertion. Surfaced as an observation, not silently resolved.
+
 ---
 
 ## Open Questions (resolve before/during build)
@@ -191,19 +211,41 @@ Verified `@framer/plugin` v4.1.0 API surface:
 ## Current Work (2026-10-03)
 
 ### Just Completed
-- ✅ Verified `@framer/plugin` v4.1.0 API surface → `docs/API-NOTES.md`
-- ✅ Created 11 future specs (F01-F11) in `.specs/future/`
-- ✅ Updated PROGRESS.md with current status and resolved open questions
-- ✅ Verified sub-agent setup (9 agents, all present and correct)
+- ✅ Tasks 1 to 3: API verification, spec 001 provider architecture, spec 002 connection manager with UI foundations and tests
+- ✅ Design system alignment pass on the spec 002 UI against `docs/FRAME_DESIGN_SYSTEM.md` (4px grid, focus rings, active-row hover fix, Title Case fix)
 
 ### Next Up
-- 🔄 **Task 2: Implement spec 001 (provider architecture foundation)**
-  - Create `src/providers/types.ts` (contracts, `NormalizedProduct`)
-  - Create `src/providers/registry.ts` + `src/providers/index.ts`
-  - Test with a mock provider fixture
+- 🔄 **Task 4: Implement spec 003 (Woo adapter + sync engine)**
+  - `src/providers/woocommerce/` mapper + product methods
+  - `src/sync/` engine, identity, watermark, report
+  - MappingModal, SyncReportModal, SyncProgress
 
 ### In Progress
-- None (starting Task 2 now)
+- None (ready to start Task 4)
+
+---
+
+## Current Work (2026-10-04): True CSS Modules Migration
+
+Restructured all plugin styles under `src/assets/styles/` and converted every component to
+scoped CSS Modules (hashed class names), eliminating the monolithic 1272-line `App.css`.
+
+### New Style Architecture
+- `src/assets/styles/variables.css`: all design tokens, dark on `:root` + `[data-theme="dark"]` + `[data-framer-theme="dark"]`, light on `[data-theme="light"]` + `[data-framer-theme="light"]`.
+- `src/assets/styles/global/global.css`: shared global styles only (reset, body + mesh background, badges, buttons, notices, toggle rows, text helpers, scrollbar, focus rings).
+- `src/assets/styles/module/*.css`: one CSS module per component (Card, Field, CredentialFields, Switch, HelpTooltip, ConnectionModal, Dashboard, ConnectionPage).
+- `src/App.css`: pure 13-line aggregator (Google Fonts import + variables.css + global.css). `App.tsx` still imports it.
+
+### Converted Files
+- 8 components/views now import their `*.module.css` and use the imported styles object for every component-scoped class; shared global classes (`.btn`, `.badge`, `.notice`, `.muted`, `.small`, `.toggle-row`, `.icon-button`) remain plain strings in JSX.
+- `Card.tsx` uses `BACKGROUND_CLASS` / `PADDING_CLASS` lookup Records with a small `joinClasses` helper.
+- `Dashboard.tsx` and `ConnectionPage.tsx` bridge into global classes via `:global()` where a module rule must target them (e.g. `.emptyCard :global(.muted)`, `.formActions :global(.btn) { flex: 1; }`).
+- `Switch.tsx` cascade guards moved to the module: `.switch .switchInput` (0,2,0) still beats framer.css `input[type="checkbox"]` (0,1,1); the input overlays the track with `z-index: 1` and the track is `pointer-events: none`.
+- `ui.test.tsx` Card background test now asserts via the imported `cardStyles` object instead of hardcoded kebab-case class names.
+
+### Docs Updated
+- `INSTRUCTION.md`: design tokens path and Switch styling reference now point to the new files.
+- `docs/FRAME_DESIGN_SYSTEM.md`: CSS variables reference points to `src/assets/styles/variables.css`.
 
 ---
 

@@ -7,6 +7,8 @@
  */
 
 import { useCallback, useEffect, useState } from "react"
+
+import dashboardStyles from "../assets/styles/module/Dashboard.module.css"
 import { Modal } from "../components/ui/Modal"
 import { HelpTooltip } from "../components/ui/HelpTooltip"
 import {
@@ -30,7 +32,7 @@ interface DashboardProps {
   onEdit: (connection: ConnectionRecord) => void
 }
 
-/** "1 connection", "2 connections": pluralized counts, never "connection(s)". */
+/** "1 connection", "2 connections": pluralized counts, never lazy plural forms. */
 export function formatCount(count: number, noun: string): string {
   return count === 1 ? `1 ${noun}` : `${count} ${noun}s`
 }
@@ -45,6 +47,17 @@ function stateBadgeClass(state: ValidationState): string {
   return "badge badge-neutral"
 }
 
+/** Icon tile class: green when connected, red when failed, neutral otherwise. */
+function connectionIconClass(state: ValidationState): string {
+  if (state === "valid") {
+    return `${dashboardStyles.connectionIcon} ${dashboardStyles.iconSuccess}`
+  }
+  if (state === "invalid") {
+    return `${dashboardStyles.connectionIcon} ${dashboardStyles.iconDanger}`
+  }
+  return `${dashboardStyles.connectionIcon} ${dashboardStyles.iconNeutral}`
+}
+
 function formatLastChecked(iso: string): string {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) {
@@ -55,6 +68,82 @@ function formatLastChecked(iso: string): string {
     timeStyle: "short",
   })
   return `Last checked ${formatted}.`
+}
+
+/** Header brand mark: circling arrows for the sync motif. */
+function SyncMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M23 4v6h-6" />
+        <path d="M1 20v-6h6" />
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
+        <path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+      </g>
+    </svg>
+  )
+}
+
+/** Row mark: a globe tinted by the connection state class around it. */
+function GlobeMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="18"
+      height="18"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18" />
+        <path d="M12 3a13.5 13.5 0 0 1 3.6 9 13.5 13.5 0 0 1-3.6 9 13.5 13.5 0 0 1-3.6-9A13.5 13.5 0 0 1 12 3z" />
+      </g>
+    </svg>
+  )
+}
+
+/** Empty state mark: a shopping bag inviting the first connection. */
+function BagMark() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </g>
+    </svg>
+  )
 }
 
 /** Render the dashboard shell with the connection list. */
@@ -143,32 +232,44 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
         key={connection.id}
         className={
           connection.isActive
-            ? "connection-row connection-row-active"
-            : "connection-row"
+            ? `${dashboardStyles.connectionRow} ${dashboardStyles.connectionRowActive}`
+            : dashboardStyles.connectionRow
         }
       >
-        <div className="connection-main">
-          <div className="connection-title-row">
-            <span className="connection-host">{connection.storeHost}</span>
-            {connection.isActive ? (
-              <span className="badge badge-primary">Active</span>
-            ) : null}
+        <div className={dashboardStyles.connectionTop}>
+          <span
+            className={connectionIconClass(connection.validationState)}
+            aria-hidden="true"
+          >
+            <GlobeMark />
+          </span>
+          <div className={dashboardStyles.connectionMain}>
+            <div className={dashboardStyles.connectionTitleRow}>
+              <span className={dashboardStyles.connectionHost}>{connection.storeHost}</span>
+              {connection.isActive ? (
+                <span className="badge badge-primary">
+                  <span className="badge-dot" aria-hidden="true" />
+                  Active
+                </span>
+              ) : null}
+            </div>
+            <div className={dashboardStyles.badgeRow}>
+              <span className={stateBadgeClass(connection.validationState)}>
+                <span className="badge-dot" aria-hidden="true" />
+                {CONNECTION_STATE_LABELS[connection.validationState]}
+              </span>
+              <span className="badge badge-neutral">
+                {KEY_SCOPE_LABELS[connection.keyScope]}
+              </span>
+            </div>
+            <p className="muted small">
+              {connection.lastValidatedAt
+                ? formatLastChecked(connection.lastValidatedAt)
+                : "Not checked yet."}
+            </p>
           </div>
-          <div className="badge-row">
-            <span className={stateBadgeClass(connection.validationState)}>
-              {CONNECTION_STATE_LABELS[connection.validationState]}
-            </span>
-            <span className="badge badge-neutral">
-              {KEY_SCOPE_LABELS[connection.keyScope]}
-            </span>
-          </div>
-          <p className="muted small">
-            {connection.lastValidatedAt
-              ? formatLastChecked(connection.lastValidatedAt)
-              : "Not checked yet."}
-          </p>
         </div>
-        <div className="connection-actions">
+        <div className={dashboardStyles.connectionActions}>
           {!connection.isActive ? (
             <button
               type="button"
@@ -217,92 +318,131 @@ export function Dashboard({ dataVersion, onConnect, onEdit }: DashboardProps) {
   }
 
   return (
-    <main className="dashboard">
-      <header className="dashboard-header">
-        <h1 className="dashboard-title">Ecom-Link</h1>
-        <HelpTooltip text="Connect a WooCommerce store and sync its products into Framer CMS collections." />
-      </header>
+      <main className={dashboardStyles.dashboard}>
+          <header className={dashboardStyles.dashboardHeader}>
+              <div className={dashboardStyles.headerBrand}>
+                  <span
+                      className={dashboardStyles.headerLogo}
+                      aria-hidden='true'>
+                      <SyncMark />
+                  </span>
+                  <div className={dashboardStyles.headerText}>
+                      <h1 className={dashboardStyles.dashboardTitle}>
+                          Ecom-Link
+                      </h1>
+                      <p className={dashboardStyles.dashboardSubtitle}>
+                          Sync your store with Framer.
+                      </p>
+                  </div>
+              </div>
+              <HelpTooltip text='Connect a WooCommerce store and sync its products into Framer CMS collections.' />
+          </header>
 
-      {loadError ? (
-        <div className="notice notice-error" role="alert">
-          <p>{loadError}</p>
-        </div>
-      ) : null}
-      {actionError ? (
-        <div className="notice notice-error" role="alert">
-          <p>{actionError}</p>
-        </div>
-      ) : null}
+          <div className={dashboardStyles.dashboardContent}>
+              {loadError ? (
+                  <div
+                      className='notice notice-error'
+                      role='alert'>
+                      <p>{loadError}</p>
+                  </div>
+              ) : null}
+              {actionError ? (
+                  <div
+                      className='notice notice-error'
+                      role='alert'>
+                      <p>{actionError}</p>
+                  </div>
+              ) : null}
 
-      {loading ? (
-        <p className="muted">Loading connections.</p>
-      ) : connections.length === 0 ? (
-        <section className="card empty-card">
-          <h2 className="card-title">No Store Connected Yet</h2>
-          <p className="muted">
-            Connect your WooCommerce store to start syncing products.
-          </p>
-          <button type="button" className="btn btn-primary" onClick={onConnect}>
-            Connect store
-          </button>
-        </section>
-      ) : (
-        <section className="card">
-          <div className="card-heading-row">
-            <h2 className="card-title">Store Connections</h2>
-            <span className="muted small">
-              {formatCount(connections.length, "connection")}
-            </span>
+              {loading ? (
+                  <div className={dashboardStyles.loadingRow}>
+                      <span
+                          className={dashboardStyles.spinner}
+                          aria-hidden='true'
+                      />
+                      <span>Loading connections.</span>
+                  </div>
+              ) : connections.length === 0 ? (
+                  <section
+                      className={`${dashboardStyles.card} ${dashboardStyles.emptyCard}`}>
+                      <span
+                          className={dashboardStyles.emptyIconWrap}
+                          aria-hidden='true'>
+                          <BagMark />
+                      </span>
+                      <h2 className={dashboardStyles.cardTitle}>
+                          No Store Connected Yet
+                      </h2>
+                      <p className='muted'>
+                          Connect your WooCommerce store to start syncing
+                          products.
+                      </p>
+                      <button
+                          type='button'
+                          className='btn btn-primary btn-lg btn-block'
+                          onClick={onConnect}>
+                          Connect store
+                      </button>
+                  </section>
+              ) : (
+                  <section className={dashboardStyles.card}>
+                      <div className={dashboardStyles.cardHeadingRow}>
+                          <h2 className={dashboardStyles.cardTitle}>
+                              Store Connections
+                          </h2>
+                          <span className='muted small'>
+                              {formatCount(connections.length, 'connection')}
+                          </span>
+                      </div>
+                      <ul className={dashboardStyles.connectionList}>
+                          {connections.map(renderConnection)}
+                      </ul>
+                      <button
+                          type='button'
+                          className='btn btn-secondary btn-block'
+                          onClick={onConnect}>
+                          Connect another store
+                      </button>
+                  </section>
+              )}
+
+              {pendingDisconnect ? (
+                  <Modal
+                      title='Disconnect Store?'
+                      onClose={function handleClose() {
+                          setPendingDisconnect(null);
+                      }}
+                      footer={
+                          <>
+                              <button
+                                  type='button'
+                                  className='btn btn-secondary'
+                                  disabled={busyId !== null}
+                                  onClick={function handleClose() {
+                                      setPendingDisconnect(null);
+                                  }}>
+                                  Cancel
+                              </button>
+                              <button
+                                  type='button'
+                                  className='btn btn-danger'
+                                  disabled={busyId !== null}
+                                  onClick={function handleConfirm() {
+                                      void handleDisconnect();
+                                  }}>
+                                  Disconnect
+                              </button>
+                          </>
+                      }>
+                      <p>
+                          This removes the stored keys for{' '}
+                          {pendingDisconnect.storeHost}. Products already synced
+                          stay in your CMS collection. Syncing stops until you
+                          connect again.
+                      </p>
+                  </Modal>
+              ) : null}
           </div>
-          <ul className="connection-list">{connections.map(renderConnection)}</ul>
-          <button
-            type="button"
-            className="btn btn-secondary btn-block"
-            onClick={onConnect}
-          >
-            Connect another store
-          </button>
-        </section>
-      )}
-
-      {pendingDisconnect ? (
-        <Modal
-          title="Disconnect Store?"
-          onClose={function handleClose() {
-            setPendingDisconnect(null)
-          }}
-          footer={
-            <>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                disabled={busyId !== null}
-                onClick={function handleClose() {
-                  setPendingDisconnect(null)
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                disabled={busyId !== null}
-                onClick={function handleConfirm() {
-                  void handleDisconnect()
-                }}
-              >
-                Disconnect
-              </button>
-            </>
-          }
-        >
-          <p>
-            This removes the stored keys for {pendingDisconnect.storeHost}.
-            Products already synced stay in your CMS collection. Syncing stops
-            until you connect again.
-          </p>
-        </Modal>
-      ) : null}
-    </main>
-  )
+      </main>
+  );
 }

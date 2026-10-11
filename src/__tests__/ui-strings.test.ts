@@ -46,7 +46,7 @@ describe("UX writing rules across src", () => {
     }
   })
 
-  it("never uses lazy pluralization like connection(s)", () => {
+  it("never uses lazy pluralization like connection-plus-parenthesis-sus-parenthesis-s", () => {
     for (const file of collectSourceFiles(srcDir)) {
       const content = readFileSync(file, "utf8")
       expect(

@@ -1,0 +1,42 @@
+/* HelpTooltip: small inline button with a glass bubble on open. The
+   tooltip-fade-in keyframes are local to this module. The bubble is
+   absolutely positioned at the trigger span's corner; the component measures
+   the trigger and canvas and passes the clamped offset as an inline left/top
+   that overrides these defaults, so the bubble can never spill past the
+   plugin canvas edges. */
+
+.helpTooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.helpTooltipBubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 180px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass-base);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 14px;
+  box-shadow: var(--shadow-lg);
+  animation: tooltip-fade-in 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

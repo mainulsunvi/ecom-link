@@ -1,0 +1,97 @@
+/* ConnectionPage: full-height page shell for adding or editing a
+   connection. .btn is a shared global class, so it needs :global() to be
+   referenced from inside a module. */
+
+.connectionPage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: slide-in 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  /* background: var(--bg-glass-nav);` */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-liquid-glass);
+}
+
+.pageHeader button {
+	background-color: var(--bg-card);
+}
+
+.pageTitle {
+  font-size: 1rem;
+  line-height: 20px;
+  font-weight: 650;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.connectionPageForm {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.formSection input {
+	width: calc(100%);
+}
+
+.sectionTitle {
+  font-size: 14px;
+  line-height: 1;
+  /* font-weight: 600; */
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-default);
+}
+
+.formActions :global(.btn) {
+  flex: 1;
+}
+
+.toggleLabel {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

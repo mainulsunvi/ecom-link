@@ -6,5 +6,10 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.{ts,tsx}"],
+    // Spec 001 AC3 is a compile-time criterion. Type-level tests live in
+    // files ending in .test-d.ts and run tsc as part of every test run.
+    typecheck: {
+      enabled: true,
+    },
   },
 })

@@ -29,6 +29,8 @@ import {
   type ValidationState,
 } from "../storage/connections"
 
+import connectionModalStyles from "../assets/styles/module/ConnectionModal.module.css"
+
 /** Friendly labels for validation states. Raw enum values never show (rule 4). */
 export const CONNECTION_STATE_LABELS: Record<ValidationState, string> = {
   valid: "Connected",
@@ -218,7 +220,7 @@ export function ConnectionModal({
         )
       }
     >
-      <form id="connection-form" className="connection-form" onSubmit={handleSubmit}>
+      <form id="connection-form" className={connectionModalStyles.connectionForm} onSubmit={handleSubmit}>
         <CredentialFields
           values={values}
           errors={errors}
@@ -254,7 +256,7 @@ export function ConnectionModal({
         ) : null}
         {corsBlocked ? (
           <div className="notice notice-warning" role="status">
-            <h3 className="notice-title">Connection Blocked By The Browser</h3>
+            <h3 className="notice-title">Connection Blocked by the Browser</h3>
             <p>
               WooCommerce does not allow direct browser requests by default.
               Install the free companion plugin to let the plugin talk to your

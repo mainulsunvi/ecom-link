@@ -15,7 +15,7 @@
  *   stored key values. Disconnecting removes them.
  */
 
-import { framer } from "@framer/plugin"
+import { framer } from "../lib/framer"
 import { getProvider } from "../providers"
 import type { Credentials } from "../providers"
 
@@ -251,6 +251,11 @@ const INTERNAL_FIELDS: Array<{ name: string; type: string }> = [
 /** Find the internal collection without creating anything (used by reads). */
 async function findInternalCollectionId(): Promise<string | null> {
   const collections = await cms.getCollections()
+  if (!Array.isArray(collections)) {
+    // Out-of-contract response (e.g. the standalone browser preview stub):
+    // treat reads as "nothing saved yet" instead of crashing the view.
+    return null
+  }
   const found = collections.find(function hasName(collection) {
     return collection.name === INTERNAL_COLLECTION_NAME
   })

@@ -8,6 +8,9 @@
 
 import { Field } from "../ui/Field"
 
+import credentialStyles from "../../assets/styles/module/CredentialFields.module.css"
+import { Card } from "../ui/Card"
+
 export interface CredentialValues {
   storeUrl: string
   consumerKey: string
@@ -54,51 +57,63 @@ export function CredentialFields({
   }
 
   return (
-    <div className="credential-fields">
-      <Field
-        id="connection-store-url"
-        label="Store URL"
-        type="url"
-        value={values.storeUrl}
-        onChange={handleStoreUrl}
-        placeholder="https://store.example.com"
-        helpText="The address of your WooCommerce store, such as https://store.example.com."
-        error={errors.storeUrl}
-        disabled={disabled}
-        autoComplete="url"
-      />
-      <Field
-        id="connection-consumer-key"
-        label="Consumer key"
-        type="password"
-        value={values.consumerKey}
-        onChange={handleConsumerKey}
-        placeholder={
-          savedMasks
-            ? `Leave empty to keep ${savedMasks.consumerKey}.`
-            : "ck_1234567890abcdef"
-        }
-        helpText="Create API keys in WooCommerce under Settings, Advanced, REST API."
-        error={errors.consumerKey}
-        disabled={disabled}
-        autoComplete="off"
-      />
-      <Field
-        id="connection-consumer-secret"
-        label="Consumer secret"
-        type="password"
-        value={values.consumerSecret}
-        onChange={handleConsumerSecret}
-        placeholder={
-          savedMasks
-            ? `Leave empty to keep ${savedMasks.consumerSecret}.`
-            : "cs_1234567890abcdef"
-        }
-        helpText="The secret shown next to your consumer key."
-        error={errors.consumerSecret}
-        disabled={disabled}
-        autoComplete="off"
-      />
-    </div>
-  )
+      <div className={credentialStyles.credentialFields}>
+          <Card>
+              <Card.Section>
+                  <Field
+                      id='connection-store-url'
+                      label='Store URL'
+                      type='url'
+                      value={values.storeUrl}
+                      onChange={handleStoreUrl}
+                      placeholder='https://store.example.com'
+                      helpText='The address of your WooCommerce store, such as https://store.example.com.'
+                      error={errors.storeUrl}
+                      disabled={disabled}
+                      autoComplete='url'
+                  />
+              </Card.Section>
+          </Card>
+          <Card>
+              <Card.Section>
+                  <Field
+                      id='connection-consumer-key'
+                      label='Consumer key'
+                      type='password'
+                      value={values.consumerKey}
+                      onChange={handleConsumerKey}
+                      placeholder={
+                          savedMasks
+                              ? `Leave empty to keep ${savedMasks.consumerKey}.`
+                              : 'ck_1234567890abcdef'
+                      }
+                      helpText='Create API keys in WooCommerce under Settings, Advanced, REST API.'
+                      error={errors.consumerKey}
+                      disabled={disabled}
+                      autoComplete='off'
+                  />
+              </Card.Section>
+          </Card>
+          <Card>
+              <Card.Section>
+                  <Field
+                      id='connection-consumer-secret'
+                      label='Consumer secret'
+                      type='password'
+                      value={values.consumerSecret}
+                      onChange={handleConsumerSecret}
+                      placeholder={
+                          savedMasks
+                              ? `Leave empty to keep ${savedMasks.consumerSecret}.`
+                              : 'cs_1234567890abcdef'
+                      }
+                      helpText='The secret shown next to your consumer key.'
+                      error={errors.consumerSecret}
+                      disabled={disabled}
+                      autoComplete='off'
+                  />
+              </Card.Section>
+          </Card>
+      </div>
+  );
 }

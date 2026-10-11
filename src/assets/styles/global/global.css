@@ -1,0 +1,387 @@
+/* ============================================================================
+   Ecom-Link global styles - Liquid Glassmorphism Design System
+
+   Everything shared across components lives here: the base reset, buttons,
+   badges, notices, text helpers, and the shared toggle row. Component-scoped
+   rules live in ../module/*.module.css (true CSS Modules) and are imported
+   by the component that owns them. Design tokens live in ../variables.css.
+   ============================================================================ */
+
+/* ============================================================================
+   Base Reset & Typography
+   ============================================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 450;
+  color: var(--text-secondary);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fluid ambient mesh background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-mesh);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================================
+   Badges
+   ============================================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 550;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge-primary {
+  color: var(--tint);
+  background: var(--tint-dimmed);
+  border-color: var(--tint-border);
+}
+
+.badge-success {
+  color: var(--success);
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+
+.badge-error {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: var(--danger);
+}
+
+.badge-neutral {
+  color: var(--text-secondary);
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-default);
+}
+
+/* ============================================================================
+   Buttons
+   ============================================================================ */
+
+.btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Primary button with liquid glass effect */
+.btn-primary {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--tint) 0%, var(--tint-active) 100%);
+  border-color: var(--tint);
+  box-shadow: var(--shadow-btn-primary);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--liquid-glass-gradient);
+  opacity: 0;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: linear-gradient(135deg, var(--tint-hover) 0%, var(--tint-active) 100%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 0 24px -3px rgba(0, 153, 255, 0.5),
+    0 4px 12px rgba(0, 153, 255, 0.4);
+}
+
+/* Secondary button with glass effect */
+.btn-secondary {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-liquid-glass);
+}
+
+.btn-secondary:not(:disabled):hover {
+  background: var(--bg-surface-elevated);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-glass);
+}
+
+/* Danger button */
+.btn-danger {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+  border-color: var(--danger);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 3px 10px rgba(244, 63, 94, 0.4);
+}
+
+.btn-danger:not(:disabled):hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
+    0 0 24px -3px rgba(244, 63, 94, 0.5),
+    0 4px 12px rgba(244, 63, 94, 0.4);
+}
+
+/* Ghost buttons */
+.btn-ghost,
+.btn-ghost-danger {
+  color: var(--text-secondary);
+  background: transparent;
+  border-color: transparent;
+  padding: 4px 12px;
+}
+
+.btn-ghost-icon {
+  color: var(--text-secondary);
+  padding: 8px;
+  font-size: 14px;
+  background: #f8f8f8;
+}
+
+.btn-ghost-icon:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.btn-ghost:not(:disabled):hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.btn-ghost-danger {
+  color: var(--danger);
+}
+
+.btn-ghost-danger:not(:disabled):hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.btn-small {
+  font-size: 11px;
+  line-height: 14px;
+  padding: 5px 10px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+}
+
+/* Icon buttons */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-button:not(:disabled):hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.icon-button:active {
+  transform: scale(0.95);
+}
+
+/* ============================================================================
+   Toggle Rows (shared by the connection page and the connection modal)
+   ============================================================================ */
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: var(--space-xs) 0;
+}
+
+/* ============================================================================
+   Notices
+   ============================================================================ */
+
+.notice {
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid;
+}
+
+.notice p {
+  margin: 0;
+  line-height: 16px;
+}
+
+.notice-title {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.notice-error {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.notice-warning {
+  background: var(--warning-bg);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.notice-warning p {
+  color: var(--warning);
+}
+
+.notice-steps {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--warning);
+}
+
+/* ============================================================================
+   Text Helpers
+   ============================================================================ */
+
+.muted {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.small {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+/* ============================================================================
+   Scrollbar Styling
+   ============================================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-xs);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ============================================================================
+   Focus Styles
+   ============================================================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+
+
+/* Framer Default color override */
+
+[data-theme="dark"] button,
+[data-framer-theme="dark"] button {
+	background-color: transparent;
+}
+	/* 
+	[data-theme="light"] *,
+	[data-framer-theme="light"] * {
+		background-color: transparent;
+	} */

@@ -1,0 +1,8 @@
+/* ConnectionModal form: the add/edit connection form shared by the modal
+   flow. */
+
+.connectionForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

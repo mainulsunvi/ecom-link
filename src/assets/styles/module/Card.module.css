@@ -1,0 +1,144 @@
+/* Card: Polaris-style compound card. Class names are camelCase so JSX can
+   access them with dot notation (styles.uiCard). */
+
+.uiCard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;	
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-default);
+  border-style: dashed;
+  border-radius: var(--radius-md);
+  /* box-shadow: var(--shadow-liquid-glass); */
+  /* overflow: hidden; */
+}
+
+.uiCard input  {
+	width: calc(100%);
+	background-color: transparent;
+}
+
+/* Surface tones (Polaris background prop). */
+.bgSecondary {
+  background: var(--bg-surface);
+}
+
+.bgTransparent {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* 1px dividers between every row after the first (Polaris section dividers). */
+.uiCard > * + * {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.headBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Shared right-aligned action cluster for header, section head, and footer. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+/* Section padding scale (Polaris padding prop). */
+.paddingSnap {
+  padding: 8px 16px;
+}
+
+.paddingNone {
+  padding: 0;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Left block inside a section head: stacked title + subheading. */
+.sectionHeadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Muted supporting line under a card or section title (Polaris subheading). */
+.subheading {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 450;
+  color: var(--text-secondary);
+}
+
+.subsection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.subsection + .subsection {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.footerContent {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-secondary);
+}

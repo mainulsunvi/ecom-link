@@ -7,6 +7,8 @@
  * role="alert" so screen readers announce them.
  */
 
+import fieldStyles from "../../assets/styles/module/Field.module.css"
+
 interface FieldProps {
   /** DOM id, also used to derive the help and error ids. */
   id: string
@@ -51,13 +53,17 @@ export function Field({
   }
 
   return (
-    <div className={error ? "field field-invalid" : "field"}>
-      <label className="field-label" htmlFor={id}>
+    <div
+      className={
+        error ? `${fieldStyles.field} ${fieldStyles.fieldInvalid}` : fieldStyles.field
+      }
+    >
+      <label className={fieldStyles.fieldLabel} htmlFor={id}>
         {label}
       </label>
       <input
         id={id}
-        className="field-input"
+        className={fieldStyles.fieldInput}
         type={type}
         value={value}
         onChange={handleChange}
@@ -68,12 +74,12 @@ export function Field({
         aria-describedby={describedBy}
       />
       {helpText ? (
-        <p className="field-help" id={helpId}>
+        <p className={fieldStyles.fieldHelp} id={helpId}>
           {helpText}
         </p>
       ) : null}
       {error ? (
-        <p className="field-error-text" id={errorId} role="alert">
+        <p className={fieldStyles.fieldErrorText} id={errorId} role="alert">
           {error}
         </p>
       ) : null}
